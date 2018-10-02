@@ -42,11 +42,10 @@ def main():
         new_vals = ((new_vals - minimum)*255)/maximum
 
     new_img = map_vals(new_vals, img)
-    print(np.array_equal(img, new_img))
     cv2.imshow("old_histogram", img)
     cv2.imshow("updated_histogram", new_img)
     plt.plot(range(255), np.histogram(new_img, range(256))[0])
-    plt.plot(range(255), np.histogram(img, range(256))[0])
+    # plt.plot(range(255), np.histogram(img, range(256))[0])
     plt.show()
     cv2.waitKey(0)
 
