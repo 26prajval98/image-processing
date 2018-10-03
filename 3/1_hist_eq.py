@@ -10,6 +10,7 @@ def find_s(r, p):
         total += i*p[i]
     return total
 
+
 def map_vals(vals, img):
     uimg = np.array(img[:, :])
     arr = np.shape(uimg)
