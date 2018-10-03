@@ -30,7 +30,7 @@ def median_filter(n=3):
 
 
 def main():
-    median_filter()
+    median_filter(3)
 
 
 if __name__ == '__main__':
