@@ -15,7 +15,7 @@ def transform(image, mask):
         for j in range(param, rows-param):
             x = np.multiply(image[i - param: i + dim_mask - param, j - param: j + dim_mask - param], mask)
             x = int(np.sum(x))
-            transformed[i,j] = max(min(x, 255), 0)
+            transformed[i, j] = max(min(x, 255), 0)
 
     return transformed
 
