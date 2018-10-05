@@ -3,7 +3,7 @@ import numpy as np
 
 
 def transform(image, mask):
-    transformed = np.array(image[:, :])
+    transformed = np.array(image[:, :, :])
     dim = np.shape(transformed)
     cols = dim[0]
     rows = dim[1]
@@ -13,9 +13,10 @@ def transform(image, mask):
 
     for i in range(param, cols-param):
         for j in range(param, rows-param):
-            x = np.multiply(image[i - param: i + dim_mask - param, j - param: j + dim_mask - param], mask)
-            x = int(np.sum(x))
-            transformed[i, j] = max(min(x, 255), 0)
+            for k in range(3):
+                x = np.multiply(image[i - param: i + dim_mask - param, j - param: j + dim_mask - param, k], mask)
+                x = int(np.sum(x))
+                transformed[i, j, k] = max(min(x, 255), 0)
 
     return transformed
 
@@ -27,7 +28,8 @@ def main():
         [0, 1, 0]
     ], dtype=np.float32)
 
-    image = cv2.imread("img_3.png", cv2.IMREAD_GRAYSCALE)
+    image = cv2.imread("img_3.png", cv2.IMREAD_COLOR)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
     masked = transform(image, mask)
 
@@ -36,9 +38,10 @@ def main():
 
     masked_normal = np.array(((masked - minimum)/(maximum-minimum))*255, dtype=np.uint8)
 
-    cv2.imshow("Original", image)
-    cv2.imshow("sharp without normalization", cv2.subtract(image, masked))
-    cv2.imshow("sharp with normalization", cv2.subtract(image, masked_normal))
+    cv2.imshow("mask", masked_normal)
+    cv2.imshow("sharp", cv2.subtract(image, masked_normal))
+    cv2.imshow("original", image)
+
     cv2.waitKey(0)
 
 
