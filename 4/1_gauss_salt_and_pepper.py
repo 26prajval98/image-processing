@@ -18,13 +18,17 @@ def create_sp(img, p):
     return sp
 
 
-def create_gaussian(img, p):
+def create_gaussian(img):
+    kernel = [[1, 2, 1], [2, 4, 2], [1, 2, 1]]
+
     g = np.array(img[:, :])
-
     shape = np.shape(g)
-    g = g + np.random.normal(0, p/100, [shape[0], shape[1]])
 
-    g = np.array(g, dtype=np.uint8)
+    for y in range(1, shape[0]-1):
+        for x in range(1, shape[1]-1):
+            temp = g[y-1:y+2, x-1:x+2]
+            v = int(np.sum(np.multiply(temp, kernel)) / 16)
+            g[y, x] = v
 
     return g
 
@@ -38,13 +42,16 @@ class Noise:
         self.salt_pepper = None
         self.gaussian = None
 
-    def add_salt_pepper(self):
+    def add_salt_pepper(self, percent=None):
+        if percent is None:
+            percent = type(self).percent
+
         if self.salt_pepper is None:
-            self.salt_pepper = create_sp(self.img, type(self).percent)
+            self.salt_pepper = create_sp(self.img, percent)
 
     def add_gaussian(self):
         if self.gaussian is None:
-            self.gaussian = create_gaussian(self.img, type(self).percent)
+            self.gaussian = create_gaussian(self.img)
 
     @classmethod
     def set_percent(cls, percent):
