@@ -12,7 +12,8 @@ def blurn(n, img):
     start = floor(n/2)
     start = int(start)
     end = n - start
-
+    
+    # for all the pixels , replace the value with the average of the values of the neighbouring pixels
     for j in range(start, x - start):
         for i in range(start, y - start):
             z = img[i - start:i + end, j - start:j + end]
@@ -24,6 +25,7 @@ def blurn(n, img):
 
 def main(n=3):
     print(n)
+    # read the image in grayscale
     img = cv2.imread('img.png', cv2.IMREAD_GRAYSCALE)
     new = np.array(img, dtype='int')
     new = blurn(n, new)
